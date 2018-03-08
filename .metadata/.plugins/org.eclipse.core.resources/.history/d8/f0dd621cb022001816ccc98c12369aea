@@ -1,0 +1,9 @@
+package org.mall.manager.service;
+
+public interface UserService {
+
+	/**
+	 * 登录
+	 */
+	
+}

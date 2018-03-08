@@ -1,0 +1,8 @@
+package org.mall.manager.pojo;
+
+public class Snippet {
+	public static void main(String[] args) {
+		mall-manager-interface
+	}
+}
+

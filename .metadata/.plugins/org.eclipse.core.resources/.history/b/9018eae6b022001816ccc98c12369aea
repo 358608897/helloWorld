@@ -1,0 +1,12 @@
+package org.mall.manager.service;
+
+public interface UserService {
+
+	/**
+	 * 登录
+	 */
+	boolean login(User user);
+	/**
+	 * 注册
+	 */
+}

@@ -1,0 +1,9 @@
+package org.mall.manager.pojo;
+
+public class User {
+	
+	private String name;
+	
+	private String pwd;
+
+}

@@ -1,0 +1,5 @@
+package org.mall.manager.service;
+
+public interface UserService {
+
+}
