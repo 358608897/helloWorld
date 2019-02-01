@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="false"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 读取配置文件 -->
+	<context:property-placeholder location="classpath:db.properties" />
+	<context:component-scan base-package="com.huawei.service"></context:component-scan>
+	<!-- 配置数据源 -->
+	<bean id="slave" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		scope="singleton">
+		<property name="user" value="${username1}" />
+		<property name="password" value="${password}" />
+		<property name="driverClass" value="${driver}" />
+		<property name="jdbcUrl" value="${slaveUrl}" />
+	</bean>
+	<!-- 配置数据源 -->
+	<bean id="master" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		scope="singleton">
+		<property name="user" value="${username1}" />
+		<property name="password" value="${password}" />
+		<property name="driverClass" value="${driver}" />
+		<property name="jdbcUrl" value="${masterUrl}" />
+	</bean>
+
+	<!-- mybatis和spring整合 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="datasource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+	</bean>
+
+	<!--4 自动扫描对象关系映射 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!--指定会话工厂，如果当前上下文中只定义了一个则该属性可省去 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+		<!-- 指定要自动扫描接口的基础包，实现接口 -->
+		<property name="basePackage" value="com.huawei.dao"></property>
+	</bean>
+	<bean id="datasource" class="com.huawei.dao.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="master" value-ref="master"></entry>
+				<entry key="slave" value-ref="slave"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="master"></property>
+	</bean>
+
+</beans>
